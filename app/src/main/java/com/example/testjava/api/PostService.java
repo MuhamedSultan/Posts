@@ -1,4 +1,6 @@
-package com.example.testjava;
+package com.example.testjava.api;
+
+import com.example.testjava.models.Post;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.example.testjava;
+package com.example.testjava.api;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
