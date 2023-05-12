@@ -25,7 +25,8 @@ public class PostsRepository {
     public Completable addPostToFavourite(Post post) {
         return postsDao.addPostToFavourite(post);
     }
-    public LiveData<List<Post>> getFavouritePosts(){
+
+    public LiveData<List<Post>> getFavouritePosts() {
         return postsDao.getAllFavouritePosts();
     }
 }

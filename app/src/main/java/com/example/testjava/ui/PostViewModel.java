@@ -1,6 +1,7 @@
 package com.example.testjava.ui;
 
 import android.annotation.SuppressLint;
+import android.app.Application;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -9,6 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.testjava.db.PostsDao;
+import com.example.testjava.db.PostsDatabase;
 import com.example.testjava.models.Post;
 import com.example.testjava.repository.PostsRepository;
 
@@ -22,15 +24,11 @@ import retrofit2.Response;
 
 public class PostViewModel extends ViewModel {
     MutableLiveData<List<Post>> posts = new MutableLiveData<>();
-    private PostsRepository postsRepository;
-    public void setPostsRepository(PostsRepository postsRepository) {
-        this.postsRepository = postsRepository;
+    private final PostsRepository postsRepository;
+    public PostViewModel(Application application) {
+        PostsDao postsDatabase = PostsDatabase.getInstance(application).postsDao();
+        postsRepository = new PostsRepository(postsDatabase);
     }
-    public PostViewModel(PostsDao postsDao) {
-        postsRepository = new PostsRepository(postsDao);
-    }
-
-
     public void fetchPosts() {
         postsRepository.get().enqueue(new Callback<List<Post>>() {
             @Override
@@ -56,8 +54,9 @@ public class PostViewModel extends ViewModel {
                     // Handle error
                 });
     }
-    public LiveData<List<Post>> getFavouritePosts(){
-      return postsRepository.getFavouritePosts();
+
+    public LiveData<List<Post>> getFavouritePosts() {
+        return postsRepository.getFavouritePosts();
     }
 }
 
