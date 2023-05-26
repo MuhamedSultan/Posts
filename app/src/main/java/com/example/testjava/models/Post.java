@@ -9,11 +9,13 @@ public class Post {
     private int id;
     private String title;
     private String body;
+    private boolean isFavorite;
 
-    public Post(int id, String title, String body) {
+    public Post(int id, String title, String body, boolean isFavorite) {
         this.id = id;
         this.title = title;
         this.body = body;
+        this.isFavorite = isFavorite;
     }
 
     public void setId(int id) {
@@ -40,5 +42,11 @@ public class Post {
         return body;
     }
 
+    public boolean isFavorite() {
+        return isFavorite;
+    }
 
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
 }

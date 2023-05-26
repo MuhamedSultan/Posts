@@ -25,19 +25,23 @@ import retrofit2.Response;
 public class PostViewModel extends ViewModel {
     MutableLiveData<List<Post>> posts = new MutableLiveData<>();
     private final PostsRepository postsRepository;
+
     public PostViewModel(Application application) {
         PostsDao postsDatabase = PostsDatabase.getInstance(application).postsDao();
         postsRepository = new PostsRepository(postsDatabase);
     }
+
     public void fetchPosts() {
         postsRepository.get().enqueue(new Callback<List<Post>>() {
             @Override
             public void onResponse(@NonNull Call<List<Post>> call, @NonNull Response<List<Post>> response) {
                 posts.postValue(response.body());
+                Log.e("PostViewModel", "ok: " + response.body());
+
             }
 
             @Override
-            public void onFailure(Call<List<Post>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<Post>> call, @NonNull Throwable t) {
                 Log.e("PostViewModel", "Failed to fetch posts: " + t.getMessage());
             }
         });
@@ -49,14 +53,22 @@ public class PostViewModel extends ViewModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
-                    // Handle completion
                 }, throwable -> {
-                    // Handle error
                 });
     }
 
     public LiveData<List<Post>> getFavouritePosts() {
         return postsRepository.getFavouritePosts();
     }
-}
 
+
+    @SuppressLint("CheckResult")
+    public void deleteFromFavourite(Post post) {
+        postsRepository.deleteFromFavourite(post)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(() -> {
+                }, throwable -> {
+                });
+    }
+
+}

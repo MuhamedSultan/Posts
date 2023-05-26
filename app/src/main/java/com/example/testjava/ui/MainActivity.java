@@ -1,9 +1,11 @@
 package com.example.testjava.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements InteractionListen
     }
 
     private void setUpRecycler() {
-        postAdapter = new PostAdapter(this);
+        postAdapter = new PostAdapter(this,false);
         binding.recyclerView.setAdapter(postAdapter);
         binding.recyclerView.setHasFixedSize(true);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -54,8 +56,12 @@ public class MainActivity extends AppCompatActivity implements InteractionListen
         return super.onOptionsItemSelected(item);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onClickItem(Post post) {
         postViewModel.addPostToFavourite(post);
+        Toast.makeText(this,"Added to favourite successfully",Toast.LENGTH_SHORT).show();
+        post.setFavorite(!post.isFavorite());
+        postAdapter.notifyDataSetChanged();
     }
 }

@@ -1,6 +1,8 @@
 package com.example.testjava.ui;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,14 +29,18 @@ public class FavouriteActivity extends AppCompatActivity implements InteractionL
     }
 
     private void setUpRecycler() {
-        postAdapter = new PostAdapter(this);
+        postAdapter = new PostAdapter(this,true);
         binding.favouriteRecyclerView.setAdapter(postAdapter);
         binding.favouriteRecyclerView.setHasFixedSize(true);
         binding.favouriteRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onClickItem(Post post) {
-
+        postViewModel.deleteFromFavourite(post);
+        Toast.makeText(this,"Deleted from favourite successfully",Toast.LENGTH_SHORT).show();
+        post.setFavorite(!post.isFavorite());
+        postAdapter.notifyDataSetChanged();
     }
 }

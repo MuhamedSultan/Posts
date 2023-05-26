@@ -29,4 +29,9 @@ public class PostsRepository {
     public LiveData<List<Post>> getFavouritePosts() {
         return postsDao.getAllFavouritePosts();
     }
+
+
+    public  Completable deleteFromFavourite(Post post){
+       return postsDao.deleteFromFavourite(post);
+    }
 }
